@@ -52,18 +52,18 @@ public class PaymentAttributes implements Serializable {
 
   private Scheme_Payment_Type_Enum schemePaymentType;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumns({
     @JoinColumn(name = "beneficiary_party_id"),
     @JoinColumn(name = "beneficiary_party_bank_id")
   })
   private PartyEntity beneficiaryParty;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumns({@JoinColumn(name = "debtor_party_id"), @JoinColumn(name = "debtor_party_bank_id")})
   private PartyEntity debtorParty;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumns({
     @JoinColumn(name = "sponsor_party_id"),
     @JoinColumn(name = "sponsor_party_bank_id")

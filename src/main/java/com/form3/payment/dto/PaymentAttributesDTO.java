@@ -41,7 +41,7 @@ public class PaymentAttributesDTO implements Serializable {
     private String schemePaymentSubType;
 
     @JsonProperty("scheme_payment_type")
-    private String schementPaymentType;
+    private String schemePaymentType;
 
     @JsonProperty("beneficiary_party")
     private PartyEntityDTO beneficiaryParty;
@@ -146,12 +146,12 @@ public class PaymentAttributesDTO implements Serializable {
         this.schemePaymentSubType = schemePaymentSubType;
     }
 
-    public String getSchementPaymentType() {
-        return schementPaymentType;
+    public String getSchemePaymentType() {
+        return schemePaymentType;
     }
 
-    public void setSchementPaymentType(String schementPaymentType) {
-        this.schementPaymentType = schementPaymentType;
+    public void setSchemePaymentType(String schemePaymentType) {
+        this.schemePaymentType = schemePaymentType;
     }
 
     public PartyEntityDTO getBeneficiaryParty() {

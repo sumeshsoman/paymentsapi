@@ -3,6 +3,7 @@ package com.form3.payment.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentWrapperDTO implements Serializable {
@@ -10,7 +11,7 @@ public class PaymentWrapperDTO implements Serializable {
     private static final long serialVersionUID = 544210804802634208L;
 
     @JsonProperty("data")
-    private List<PaymentEntityDTO> entityDTOList;
+    private List<PaymentEntityDTO> entityDTOList = new ArrayList<>();
 
     @JsonProperty("links")
     private PaymentLinksDTO paymentLinks;

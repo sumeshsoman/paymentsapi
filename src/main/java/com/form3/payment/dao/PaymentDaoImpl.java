@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+@Transactional(dontRollbackOn = NoResultException.class)
 @Repository
 public class PaymentDaoImpl implements IPaymentDao {
 
@@ -42,7 +42,7 @@ public class PaymentDaoImpl implements IPaymentDao {
 
   @Override
   public void createPaymentEntity(PaymentEntity paymentEntity) {
-    manager.persist(paymentEntity);
+    manager.merge(paymentEntity);
     manager.flush();
   }
 

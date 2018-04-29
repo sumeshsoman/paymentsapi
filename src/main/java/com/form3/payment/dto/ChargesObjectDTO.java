@@ -28,4 +28,12 @@ public class ChargesObjectDTO implements Serializable {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
+    public ChargesObjectDTO(String amount, String currency) {
+        this.amount = amount;
+        this.currency = currency;
+    }
+
+    public ChargesObjectDTO() {
+    }
 }

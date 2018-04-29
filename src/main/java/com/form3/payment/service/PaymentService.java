@@ -4,12 +4,14 @@ import com.form3.payment.dao.IPaymentDao;
 import com.form3.payment.dto.PaymentEntityDTO;
 import com.form3.payment.dto.PaymentWrapperDTO;
 import com.form3.payment.model.PaymentEntity;
-import org.modelmapper.ModelMapper;
+import com.form3.payment.modelmapper.IDTOEntityMapper;
+import com.form3.payment.modelmapper.IEntityDTOMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
@@ -23,34 +25,49 @@ public class PaymentService implements IPaymentService {
 
   @Autowired private IPaymentDao paymentDao;
 
-  private ModelMapper modelMapper = new ModelMapper();
+  @Autowired private IEntityDTOMapper entityToDTOMapper;
+
+  @Autowired private IDTOEntityMapper dtoToEntityMapper;
 
   @Override
   public PaymentWrapperDTO getAllPayments(int start, int offset) {
-    List<PaymentEntity> paymentEntityList = paymentDao.listAllPayments(start, offset);
-    List<PaymentEntityDTO> dtos =
-        paymentEntityList
-            .parallelStream()
-            .map(entity -> modelMapper.map(entity, PaymentEntityDTO.class))
-            .collect(Collectors.toList());
     PaymentWrapperDTO wrapperDTO = new PaymentWrapperDTO();
-    wrapperDTO.setEntityDTOList(dtos);
+    try {
+      List<PaymentEntity> paymentEntityList = paymentDao.listAllPayments(start, offset);
+      List<PaymentEntityDTO> dtos =
+          paymentEntityList
+              .stream()
+              .map(entity -> entityToDTOMapper.getPaymentEntityDTO(entity))
+              .collect(Collectors.toList());
+
+      wrapperDTO.setEntityDTOList(dtos);
+    } catch (NoResultException e) {
+      logger.warn("No Payment Entities found in DB ");
+    }
     return wrapperDTO;
   }
 
   @Override
   public PaymentWrapperDTO getPaymentsById(String id) {
-    PaymentEntity paymentEntity = paymentDao.getPaymentByUuid(id);
-    PaymentEntityDTO dto = modelMapper.map(paymentEntity, PaymentEntityDTO.class);
-    PaymentWrapperDTO wrapperDTO = new PaymentWrapperDTO();
-    wrapperDTO.setEntityDTOList(Arrays.asList(dto));
+    PaymentWrapperDTO wrapperDTO = null;
+    try {
+      wrapperDTO = new PaymentWrapperDTO();
+      PaymentEntity paymentEntity = paymentDao.getPaymentByUuid(id);
+      PaymentEntityDTO dto = entityToDTOMapper.getPaymentEntityDTO(paymentEntity);
+      wrapperDTO.setEntityDTOList(Arrays.asList(dto));
+    } catch (NoResultException e) {
+      logger.warn("No Payment Entity found with id " + id);
+    }
     return wrapperDTO;
   }
 
   @Override
   public void createPayment(PaymentWrapperDTO dto) {
     List<PaymentEntityDTO> entityDTOS = dto.getEntityDTOList();
-    List<PaymentEntity> paymentEntities = entityDTOS.stream().map(entityDTO -> modelMapper.map(entityDTO, PaymentEntity.class))
+    List<PaymentEntity> paymentEntities =
+        entityDTOS
+            .stream()
+            .map(entityDTO -> dtoToEntityMapper.populatePaymentEntity(entityDTO, null))
             .collect(Collectors.toList());
     paymentEntities.stream().forEach(entity -> paymentDao.createPaymentEntity(entity));
   }
@@ -58,16 +75,39 @@ public class PaymentService implements IPaymentService {
   @Override
   public void updatePayment(PaymentWrapperDTO dto) {
     List<PaymentEntityDTO> entityDTOS = dto.getEntityDTOList();
-    List<PaymentEntity> paymentEntities = entityDTOS.stream().map(entityDTO -> modelMapper.map(entityDTO, PaymentEntity.class))
+    List<PaymentEntity> paymentEntities =
+        entityDTOS
+            .stream()
+            .filter(entityDTO -> findValidPaymentEntities(entityDTO) != null)
+            .map(
+                entityDTO ->
+                    dtoToEntityMapper.populatePaymentEntity(
+                        entityDTO, findValidPaymentEntities(entityDTO)))
             .collect(Collectors.toList());
     paymentEntities.stream().forEach(entity -> paymentDao.updatePaymentEntity(entity));
   }
 
+  private PaymentEntity findValidPaymentEntities(PaymentEntityDTO dto) {
+    PaymentEntity entity = null;
+    try {
+      entity = paymentDao.getPaymentByUuid(dto.getUuid());
+    } catch (NoResultException e) {
+      logger.warn("Cannot locate entity with uuid " + dto.getUuid());
+    }
+    return entity;
+  }
+
   @Override
   public void deletePaymentById(String id) {
-    PaymentEntity paymentEntity = paymentDao.getPaymentByUuid(id);
-    if (null != paymentEntity) {
-      paymentDao.deletePaymentEntity(paymentEntity);
+    try {
+      PaymentEntity paymentEntity = paymentDao.getPaymentByUuid(id);
+      if (null != paymentEntity) {
+        paymentDao.deletePaymentEntity(paymentEntity);
+        System.out.println("##### Successfully deleted !!!!");
+      }
+    } catch (NoResultException e) {
+      logger.warn("No Payment Entity found with id " + id);
+      System.out.println("###### No Payment Entity found with id " + id);
     }
   }
 }

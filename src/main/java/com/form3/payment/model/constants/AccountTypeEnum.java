@@ -6,13 +6,17 @@ public enum AccountTypeEnum {
   INVALID;
 
   public static AccountTypeEnum getEnumOnOrdinal(String value){
-    int ordinal = Integer.parseInt(value);
-    if(ordinal == 0){
-      return SAVINGS;
-    }else if(ordinal == 1){
-      return CURRENTACCOUNT;
-    }else {
-      return INVALID;
+      try {
+          int ordinal = Integer.parseInt(value);
+          if(ordinal == 0){
+              return SAVINGS;
+          }else if(ordinal == 1){
+              return CURRENTACCOUNT;
+          }else {
+              return INVALID;
+          }
+      }catch(NumberFormatException e){
+          return AccountTypeEnum.valueOf(value);
       }
   }
 }
