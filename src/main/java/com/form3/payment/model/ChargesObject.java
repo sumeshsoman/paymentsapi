@@ -12,8 +12,7 @@ public class ChargesObject implements Serializable {
   private Float amount;
   private CurrencyEnum currency;
 
-  public ChargesObject() {
-  }
+  public ChargesObject() {}
 
   public ChargesObject(Float amount, CurrencyEnum currency) {
 

@@ -27,7 +27,7 @@ public class PaymentDaoImpl implements IPaymentDao {
   }
 
   @Override
-  public PaymentEntity getPaymentByUuid(String uuid) throws NoResultException{
+  public PaymentEntity getPaymentByUuid(String uuid) throws NoResultException {
     return (PaymentEntity)
         manager
             .createQuery("select pa from PaymentEntity pa where pa.uuid = :UUID")

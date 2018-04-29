@@ -4,5 +4,5 @@ import com.form3.payment.dto.PaymentEntityDTO;
 import com.form3.payment.model.PaymentEntity;
 
 public interface IEntityDTOMapper {
-    PaymentEntityDTO getPaymentEntityDTO(PaymentEntity entity);
+  PaymentEntityDTO getPaymentEntityDTO(PaymentEntity entity);
 }

@@ -6,16 +6,16 @@ import java.io.Serializable;
 
 public class PaymentLinksDTO implements Serializable {
 
-    private static final long serialVersionUID = 844174293432061480L;
+  private static final long serialVersionUID = 844174293432061480L;
 
-    @JsonProperty("self")
-    private String self;
+  @JsonProperty("self")
+  private String self;
 
-    public String getSelf() {
-        return self;
-    }
+  public String getSelf() {
+    return self;
+  }
 
-    public void setSelf(String self) {
-        this.self = self;
-    }
+  public void setSelf(String self) {
+    this.self = self;
+  }
 }

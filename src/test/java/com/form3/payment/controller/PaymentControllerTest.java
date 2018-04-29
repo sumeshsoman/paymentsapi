@@ -80,21 +80,20 @@ public class PaymentControllerTest {
             .andReturn();
 
     Assert.assertEquals(HttpStatus.CREATED.value(), result.getResponse().getStatus());
-
   }
 
   private String getUUIDOfPaymentEntityFromDB() throws Exception {
-    MvcResult result = mockMvc.perform(get(PaymentController.paymentURI)).andExpect(status().isOk()).andReturn();
+    MvcResult result =
+        mockMvc.perform(get(PaymentController.paymentURI)).andExpect(status().isOk()).andReturn();
 
     System.out.println(result.getResponse().getContentAsString());
     PaymentWrapperDTO dto =
-            objectMapper.readValue(
-                    result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
+        objectMapper.readValue(
+            result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
     Assert.assertNotNull(dto);
 
     String uuidForTest = dto.getEntityDTOList().get(0).getUuid();
     return uuidForTest;
-
   }
 
   @Test
@@ -174,7 +173,8 @@ public class PaymentControllerTest {
 
     result =
         mockMvc
-            .perform(patch(PaymentController.paymentURI)
+            .perform(
+                patch(PaymentController.paymentURI)
                     .content(IntegrationTestUtil.convertObjectToJsonBytes(data))
                     .contentType(MediaType.APPLICATION_JSON))
             .andReturn();
@@ -184,8 +184,8 @@ public class PaymentControllerTest {
     result = mockMvc.perform(get(query)).andExpect(status().isOk()).andReturn();
 
     dto =
-            objectMapper.readValue(
-                    result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
+        objectMapper.readValue(
+            result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
     Assert.assertNotNull(dto);
     Assert.assertEquals(1, dto.getEntityDTOList().size());
     paymentEntityDTO = dto.getEntityDTOList().get(0);
@@ -194,7 +194,7 @@ public class PaymentControllerTest {
   }
 
   @Test
-  public void deletePayment() throws Exception{
+  public void deletePayment() throws Exception {
     String id = getUUIDOfPaymentEntityFromDB();
 
     String query = PaymentController.paymentURI + "/" + id;
@@ -202,20 +202,22 @@ public class PaymentControllerTest {
     MvcResult result = mockMvc.perform(get(query)).andExpect(status().isOk()).andReturn();
     Assert.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     PaymentWrapperDTO dto =
-            objectMapper.readValue(
-                    result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
+        objectMapper.readValue(
+            result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
     Assert.assertNotNull(dto);
     Assert.assertEquals(1, dto.getEntityDTOList().size());
 
-    result = mockMvc.perform(delete(PaymentController.paymentURI +"/{id}", id))
+    result =
+        mockMvc
+            .perform(delete(PaymentController.paymentURI + "/{id}", id))
             .andExpect(status().isNoContent())
             .andReturn();
     Assert.assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());
 
     result = mockMvc.perform(get(query)).andExpect(status().isOk()).andReturn();
     dto =
-            objectMapper.readValue(
-                    result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
+        objectMapper.readValue(
+            result.getResponse().getContentAsByteArray(), PaymentWrapperDTO.class);
     Assert.assertNotNull(dto);
     Assert.assertEquals(0, dto.getEntityDTOList().size());
   }

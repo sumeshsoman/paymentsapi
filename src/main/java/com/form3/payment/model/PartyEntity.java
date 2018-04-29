@@ -2,7 +2,6 @@ package com.form3.payment.model;
 
 import com.form3.payment.model.constants.AccountTypeEnum;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -43,8 +42,7 @@ public class PartyEntity implements Serializable {
   @OneToMany(mappedBy = "sponsorParty")
   private Set<PaymentAttributes> sponsorPaymentAttributes = new HashSet<>();
 
-  public PartyEntity() {
-  }
+  public PartyEntity() {}
 
   public BankIdAccIdKeyEntity getBankIdAccIdKey() {
     return bankIdAccIdKey;
@@ -114,6 +112,7 @@ public class PartyEntity implements Serializable {
     this.beneficiaryPaymentAttributes.add(beneficiaryPaymentAttribute);
     beneficiaryPaymentAttribute.setBeneficiaryParty(this);
   }
+
   public Set<PaymentAttributes> getDebtorPaymentAttributes() {
     return debtorPaymentAttributes;
   }
@@ -121,6 +120,7 @@ public class PartyEntity implements Serializable {
   public void setDebtorPaymentAttributes(Set<PaymentAttributes> debtorPaymentAttributes) {
     this.debtorPaymentAttributes = debtorPaymentAttributes;
   }
+
   public void addDebtorPaymentAttributes(PaymentAttributes debtorPaymentAttribute) {
     this.debtorPaymentAttributes.add(debtorPaymentAttribute);
     debtorPaymentAttribute.setDebtorParty(this);

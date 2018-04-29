@@ -30,8 +30,7 @@ public class ForexEntity implements Serializable {
   private Float originalAmount;
   private CurrencyEnum originalCurrency;
 
-  public ForexEntity() {
-  }
+  public ForexEntity() {}
 
   public PaymentAttributes getPaymentAttributesForForex() {
     return paymentAttributesForForex;

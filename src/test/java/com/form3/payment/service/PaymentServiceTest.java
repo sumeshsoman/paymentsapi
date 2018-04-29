@@ -19,7 +19,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -81,13 +82,8 @@ public class PaymentServiceTest {
     paymentService.updatePayment(wrapperDTO);
 
     PaymentEntityDTO resultDTO = paymentService.getPaymentsById(uuid).getEntityDTOList().get(0);
-    assertEquals(
-            uuid,
-            resultDTO.getUuid());
-    assertEquals(
-        new_org_id,
-            resultDTO.getOrganisation_id());
-
+    assertEquals(uuid, resultDTO.getUuid());
+    assertEquals(new_org_id, resultDTO.getOrganisation_id());
   }
 
   @Test
@@ -96,7 +92,7 @@ public class PaymentServiceTest {
     String uuid = UUID.randomUUID().toString();
     String new_org_id = "3334444";
     dto.setOrganisation_id(new_org_id);
-    dto.setUuid(uuid); //change primary key
+    dto.setUuid(uuid); // change primary key
 
     PaymentWrapperDTO wrapperDTO = new PaymentWrapperDTO();
     wrapperDTO.setEntityDTOList(Arrays.asList(dto));
@@ -107,11 +103,11 @@ public class PaymentServiceTest {
 
   @Test
   public void deletePaymentById() {
-    assertEquals(2, paymentService.getAllPayments(0,10).getEntityDTOList().size());
+    assertEquals(2, paymentService.getAllPayments(0, 10).getEntityDTOList().size());
     String uuid = paymentService.getAllPayments(0, 10).getEntityDTOList().get(0).getUuid();
     assertNotNull(uuid);
 
     paymentService.deletePaymentById(uuid);
-    assertEquals(1, paymentService.getAllPayments(0,10).getEntityDTOList().size());
+    assertEquals(1, paymentService.getAllPayments(0, 10).getEntityDTOList().size());
   }
 }

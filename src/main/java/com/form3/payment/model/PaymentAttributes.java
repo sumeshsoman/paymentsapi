@@ -80,10 +80,9 @@ public class PaymentAttributes implements Serializable {
   @JoinColumn(name = "payment_table_id")
   private PaymentEntity paymentEntity;
 
-    public PaymentAttributes() {
-    }
+  public PaymentAttributes() {}
 
-    public Float getAmount() {
+  public Float getAmount() {
     return amount;
   }
 

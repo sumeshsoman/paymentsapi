@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import java.io.Serializable;
 
 @Entity
@@ -28,8 +27,7 @@ public class PaymentEntity implements Serializable {
   @OneToOne(mappedBy = "paymentEntity", cascade = CascadeType.ALL)
   private PaymentAttributes paymentAttributes;
 
-  public PaymentEntity() {
-  }
+  public PaymentEntity() {}
 
   public String getType() {
     return type;

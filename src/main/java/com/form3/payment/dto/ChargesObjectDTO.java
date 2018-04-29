@@ -5,35 +5,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class ChargesObjectDTO implements Serializable {
-    private static final long serialVersionUID = 7180546593436328862L;
+  private static final long serialVersionUID = 7180546593436328862L;
 
-    @JsonProperty("amount")
-    private String amount;
+  @JsonProperty("amount")
+  private String amount;
 
-    @JsonProperty("currency")
-    private String currency;
+  @JsonProperty("currency")
+  private String currency;
 
-    public String getAmount() {
-        return amount;
-    }
+  public ChargesObjectDTO(String amount, String currency) {
+    this.amount = amount;
+    this.currency = currency;
+  }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
+  public ChargesObjectDTO() {}
 
-    public String getCurrency() {
-        return currency;
-    }
+  public String getAmount() {
+    return amount;
+  }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
+  public void setAmount(String amount) {
+    this.amount = amount;
+  }
 
-    public ChargesObjectDTO(String amount, String currency) {
-        this.amount = amount;
-        this.currency = currency;
-    }
+  public String getCurrency() {
+    return currency;
+  }
 
-    public ChargesObjectDTO() {
-    }
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
 }

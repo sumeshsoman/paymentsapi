@@ -1,16 +1,13 @@
 package com.form3.payment.model;
 
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class BankIdAccIdKeyEntity  implements Serializable {
+public class BankIdAccIdKeyEntity implements Serializable {
 
   private static final long serialVersionUID = -6433166506632354753L;
 
@@ -22,10 +19,9 @@ public class BankIdAccIdKeyEntity  implements Serializable {
   @Size(max = 20)
   private String bank_id;
 
-    public BankIdAccIdKeyEntity() {
-    }
+  public BankIdAccIdKeyEntity() {}
 
-    public BankIdAccIdKeyEntity(String account_number, String bank_id) {
+  public BankIdAccIdKeyEntity(String account_number, String bank_id) {
     this.account_number = account_number;
     this.bank_id = bank_id;
   }

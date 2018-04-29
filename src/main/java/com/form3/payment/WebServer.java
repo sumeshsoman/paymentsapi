@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableAutoConfiguration
 public class WebServer {
-    public static void main(String[] args) {
-        SpringApplication.run(WebServer.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(WebServer.class, args);
+  }
 }
